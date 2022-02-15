@@ -1,0 +1,658 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>執行 code</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+}
+
+.simple-table-header {
+	background: rgb(247, 246, 243);
+	color: black;
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="812996d2-01af-4af8-97f7-87183786ba6f" class="page sans"><header><h1 class="page-title">執行 code</h1></header><div class="page-body"><h1 id="ef33cfb9-436f-423b-b8f7-d2b627c7f76a" class="">3.1 always先開個資料夾</h1><ul id="84a3fd5a-052f-4c78-a5f4-8a354670f325" class="bulleted-list"><li style="list-style-type:disc">在 RStudio 的時候，我們很習慣開一個 project 來做事</li></ul><ul id="6216462f-8ca9-4dc5-95b1-ad4318ddb163" class="bulleted-list"><li style="list-style-type:disc">阿一個 project 就是一個資料夾的意思，所以對 VSCode也一樣，他希望你先開一個資料夾再來做事</li></ul><ul id="06b697f9-b888-4df2-a236-4dcb5d00d918" class="bulleted-list"><li style="list-style-type:disc">所以習慣上都會先開一個資料夾，然後新增一個 <code>.py</code> 檔 (就類比於 RStudio 先開個 project，再新增一個 <code>.r</code> 檔)，那就可以開始對這個 script 進行 coding了</li></ul><h1 id="31b4b34f-8a67-4010-8604-8bbf9dfc71b6" class="">3.2 逐行執行</h1><ul id="932e44d6-537e-4e4c-99fe-f69e037cde6b" class="bulleted-list"><li style="list-style-type:disc">在 VSCode，都是用 <code>shift + enter</code> 來逐行執行 (左下角的齒輪/keyboard shortcuts，寫python runs，就會看到python的預設快捷鍵，是shift+enter，你可以改成rstudio的ctrl+enter，但建議不要啦)。他有兩種逐行執行的呈現方式：<ul id="8945265a-4914-46f8-a6bd-f90c130a9115" class="bulleted-list"><li style="list-style-type:circle">像 R console 一樣，他會幫你執行在最下面的 terminal頁面。這個的好處是乾淨(因為不會有新視窗)，但缺點是你如果是執行畫圖時，就很醜(他沒像RStudio那麼聰明，你在 R console 執行 plot()時，他自動幫你跳右邊的圖形呈現pannel)</li></ul><ul id="ecb891ad-8d61-4d9c-b9bb-da6cf6c402d8" class="bulleted-list"><li style="list-style-type:circle">他會另開一個視窗，他叫 interactive window，其實就是啟動 jupyter notebook來執行你的這段code。他的好處是畫圖時就很方便(因為就像在Jupyter notebook裡畫圖)，但壞處就是多一個視窗很阿雜。</li></ul></li></ul><p id="ff5766e1-7971-429a-997f-22356586ba96" class="">
+</p><h3 id="acc853eb-446d-45dc-a235-2ec04fc7f28c" class="">3.2.1 用 python terminal</h3><ul id="e3586b59-09fc-4d5b-bd97-5705b586a500" class="bulleted-list"><li style="list-style-type:disc">進到設定頁面：按 <code>cmd+shift+p</code> → <code>user settings</code> → <code>jupyter send</code> </li></ul><figure id="c6ea75f5-715d-4909-93ea-8e3639731367" class="image"><a href="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled.png"><img style="width:1157px" src="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled.png"/></a></figure><ul id="025c99c5-3a02-4d8d-9bc9-8457a8cec427" class="bulleted-list"><li style="list-style-type:disc">不要打勾，那 <code>shift + enter</code> 就會使用 python terminal</li></ul><ul id="029aaf17-d975-4bca-ae95-463800a195a0" class="bulleted-list"><li style="list-style-type:disc">開一個 <code>.py</code> 檔後，只要游標放在要執行的那一行，按 <code>shift + enter</code> ，就會在 console 開啟 Python 的 REPL (python terminal)，開始evaluate結果</li></ul><ul id="9fab72a4-5613-4f2c-a201-a6dc0d509d4b" class="bulleted-list"><li style="list-style-type:disc">截個圖看一下：</li></ul><figure id="15821a63-809f-4717-9863-610d1f8b0598" class="image"><a href="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled%201.png"><img style="width:1004px" src="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled%201.png"/></a></figure><h3 id="d3ed5dbf-790f-4e4c-99cc-c9f675ecd565" class="">3.2.2 用 jupyter interactive window</h3><ul id="9e309767-53a3-4329-be6e-eb3e711d11ea" class="bulleted-list"><li style="list-style-type:disc">進到設定頁面：按 <code>cmd+shift+p</code> → <code>user settings</code> → <code>jupyter send</code> </li></ul><figure id="3f69d5fc-f5a3-4338-b14d-34b52d221fc4" class="image"><a href="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled.png"><img style="width:1157px" src="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled.png"/></a></figure><ul id="4b73f291-9315-4c83-a426-a37c1a7f036b" class="bulleted-list"><li style="list-style-type:disc">把他打勾，那 <code>shift + enter</code> 就會用 jupyter interactive window。等等繼續做設定，就做出很類似RStudio的結果</li></ul><ul id="c107ca70-798c-4343-a548-139f573fb26a" class="bulleted-list"><li style="list-style-type:disc">接著，我們要去設定 jupyter interactive window 的根目錄：<ul id="e7d3d63d-eb27-4a9a-a2bd-e7d252eb62c1" class="bulleted-list"><li style="list-style-type:circle">一樣先進到設定裡面： <code>cmd+shift+p</code> → <code>user settings</code> → <code>jupyter file root</code> ，會看到下圖<figure id="3be93938-e6fe-40ae-a2c7-35d8e15c1991" class="image"><a href="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled%202.png"><img style="width:785px" src="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled%202.png"/></a></figure><ul id="f1d20075-92a2-44c4-88d3-a13dba7202a9" class="bulleted-list"><li style="list-style-type:square">然後他原本的設定是 <code>${fileDirname}</code> ，意思是，當我對 <code>~/my_project/hello_word.py</code>  這個檔案逐行執行時，jupyter interactive window，會默認他目前所處的根目錄就是這個 file 的位子，也就是 <code>~/my_project/hello_word.py</code> </li></ul><ul id="d7a8ff0f-780c-43ce-a985-0c81f880ae42" class="bulleted-list"><li style="list-style-type:square">但我們希望他的根目錄，是在我的 project 的目錄，不是這個檔案的目錄。也就是，我希望跟目錄要在 <code>~/my_project</code> 這裏。所以，我就把根目錄改成 <code>${workspaceFolder}</code> </li></ul></li></ul></li></ul><ul id="8f64aea7-6742-4783-941c-0bda2f28812c" class="bulleted-list"><li style="list-style-type:disc">開一個 <code>.py</code> 檔後，只要游標放在要執行的那一行，按 <code>shift + enter</code> ，就會開啟 jupyter interactive window，如下圖：</li></ul><figure id="3138cc42-ab75-4430-9ad6-e3180e2f189f" class="image"><a href="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled%203.png"><img style="width:1916px" src="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled%203.png"/></a></figure><ul id="c2018012-f53f-4abf-8f9c-ec1bfcad7307" class="bulleted-list"><li style="list-style-type:disc">點圖中的第3點，就會多出變數視窗(variable explorer)。</li></ul><ul id="f516a9b7-b107-4654-a806-f81b7a623a3f" class="bulleted-list"><li style="list-style-type:disc">再點data.frame的連結，就會跳出像R一樣的 View()</li></ul><figure id="44f519ad-5950-4d2b-8314-c0f955e01a5b" class="image"><a href="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled%204.png"><img style="width:1912px" src="%E5%9F%B7%E8%A1%8C%20code%20812996d201af4af897f787183786ba6f/Untitled%204.png"/></a></figure><ul id="41f41ff1-351c-4005-9998-8fa05014b2d5" class="bulleted-list"><li style="list-style-type:disc">如圖中，點完3後，就出現4的變數清單。點5這個dataframe，就跳出6的表格</li></ul><ul id="a8697011-6fc3-452f-bd46-cc144d2c897a" class="bulleted-list"><li style="list-style-type:disc">到這邊為止，已經很像RStudio了。左邊的頁面就是 script，右邊的頁面，上面是變數清單，下面是 console。</li></ul><ul id="9a7a7b71-82cd-412a-bc8d-8ce24558712e" class="bulleted-list"><li style="list-style-type:disc">這就會是我們後續做分析時，會使用的 layout</li></ul><h1 id="ec258bd1-ceff-4fa6-938a-6bbe835246ad" class="">3.3 安裝 package</h1></div></article></body></html>

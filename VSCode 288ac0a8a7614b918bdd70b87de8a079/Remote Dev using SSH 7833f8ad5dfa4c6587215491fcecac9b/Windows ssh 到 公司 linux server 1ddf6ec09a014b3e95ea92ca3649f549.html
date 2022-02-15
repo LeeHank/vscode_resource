@@ -1,0 +1,665 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Windows ssh 到 公司 linux server</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+}
+
+.simple-table-header {
+	background: rgb(247, 246, 243);
+	color: black;
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1ddf6ec0-9a01-4b3e-95ea-92ca3649f549" class="page sans"><header><h1 class="page-title">Windows ssh 到 公司 linux server</h1></header><div class="page-body"><h1 id="248780a8-bbab-4f86-ae99-44b3a46096ff" class="">1. System requirements</h1><ul id="01154d68-a036-4018-b9b8-5c07d3b8bfb0" class="bulleted-list"><li style="list-style-type:disc">需要確認已安裝以下三個東西：<ul id="9c4703a0-ade4-4927-9d39-0506702e3a78" class="bulleted-list"><li style="list-style-type:circle">VSCode</li></ul><ul id="85690c89-4157-44b0-a8de-37003f63d482" class="bulleted-list"><li style="list-style-type:circle"><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">Remote Development extension pack</a></li></ul><ul id="a9cb808b-5be3-4a36-8d99-962e3ab0f589" class="bulleted-list"><li style="list-style-type:circle"><a href="https://code.visualstudio.com/docs/remote/troubleshooting#_installing-a-supported-ssh-client">OpenSSH compatible SSH client</a></li></ul></li></ul><h2 id="a2c953e5-b016-424b-9bdb-6765d1fbf8b3" class="">1.1 VSCode</h2><ul id="7542b6e4-7dab-473b-9433-ae41ae05c61a" class="bulleted-list"><li style="list-style-type:disc">這個早就裝好了，也不用截圖了</li></ul><h2 id="b9e7af12-8045-4a70-9440-8de0ab1542cf" class="">1.2 Remote Development extension pack</h2><ul id="3fdf90b0-ce66-4c17-b1c4-ee2fa826d36b" class="bulleted-list"><li style="list-style-type:disc">就是 VSCode 上的 extension<figure id="1d764b83-e66a-4338-91eb-8c91d4834479" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled.png"><img style="width:1568px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled.png"/></a></figure></li></ul><p id="4aa659ff-e461-4978-829a-a88cba3f83ba" class="">
+</p><h2 id="60a65de0-60f8-48d7-bb68-fa61250a31c8" class="">1.3 OpenSSH compatible SSH client</h2><ul id="4880f557-b027-45c9-a73c-c12bddcc8f5e" class="bulleted-list"><li style="list-style-type:disc">在 local 端，需要安裝 <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_installing-a-supported-ssh-client"><code>OpenSSH compatible SSH client</code></a> <figure id="6b8a79ca-1c84-4462-b97d-509defd3257b" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%201.png"><img style="width:528px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%201.png"/></a></figure></li></ul><ul id="48db6a0e-e073-4002-9058-3164c0de5471" class="bulleted-list"><li style="list-style-type:disc">可以看到，對 <code>Windows</code> 來說，有兩個選擇：<ul id="0e4a2d6e-bc5f-48ab-a7f8-b0a236ee5319" class="bulleted-list"><li style="list-style-type:circle">安裝 <code>Windows OpenSSH client</code> ：但還要跟 mis 申請，很麻煩</li></ul><ul id="75c02aa6-7617-4d3b-90f9-3656f9f437dd" class="bulleted-list"><li style="list-style-type:circle">安裝 <code>Git for Windows</code> : 這個我之前用 git 時就裝過了，所以我等等要用這個。</li></ul></li></ul><p id="01c85714-add4-46a2-9bdb-f2397a8d5a3e" class="">
+</p><h1 id="eff0b0d4-9200-4662-8c37-b98f34270fdb" class="">2. 設定本地的 public key</h1><h2 id="1b386812-9aa4-46b9-8d8d-7ee6ea38cfe0" class="">2.1 確認一下有沒有生成過 <code>id_rsa.pub</code>  </h2><ul id="38d8b155-a52c-49f3-a7c5-a39c358cdb5a" class="bulleted-list"><li style="list-style-type:disc">用 git bash 打開 terminal</li></ul><ul id="19db4658-d90a-4876-9880-17afaa40e909" class="bulleted-list"><li style="list-style-type:disc"><code>id_rsa.pub</code> 預設會放在 <code>/c/Users/19002329/.ssh</code> 這個資料夾下，所以我們可以這樣檢查：</li></ul><pre id="3464f830-9426-4638-8b08-0d11eba41f76" class="code"><code>cd ~ # 切到使用者的目錄，對我來說，就是 /c/Users/19002329
+cd .ssh # 切到此資料夾中
+ls # 看一下裡面有沒有 id_rsa.pub</code></pre><h2 id="dab3f49f-d3f3-43e9-8d72-7929a966b914" class="">2.2 如果沒有，自己生成一個</h2><pre id="bc58d84c-78ee-4081-a283-787c00a6045c" class="code"><code>cd .ssh # 如果連 .ssh 資料夾都沒有，就自己建立一個： mkdir .ssh
+ssh-keygen</code></pre><h1 id="cb0aa8d7-7ec9-4346-a5c1-ffbc270fc9a1" class="">3. 把 public key 傳到遠端 linux server 上</h1><ul id="5caeea68-a5b4-47e8-9f2d-fb1455cdeeba" class="bulleted-list"><li style="list-style-type:disc">用winscp，先登入到 linux server，以 hadoop測試區當範例</li></ul><ul id="70ece0c9-1719-4b2e-b465-be59a044ede8" class="bulleted-list"><li style="list-style-type:disc">登進去後，進到 <code>home/hadoop/.ssh</code> 資料夾中，編輯 <code>authorized_keys</code> 這個檔案 (如果沒有這個檔案，幫他新增一個)</li></ul><ul id="54c91c08-24ff-4b5d-a8d2-cba395be7b31" class="bulleted-list"><li style="list-style-type:disc">內容就直接把筆電的 public key 的內容貼上 (在自己的筆電，用記事本，打開 <code>/c/Users/19002329/.ssh/id_rsa.pub</code> 這個檔案)</li></ul><h1 id="2bbd8040-4b87-40dd-823a-09f6680093e8" class="">4. 回 VSCode 做設定</h1><ul id="54989a7b-f106-4402-9149-31684ac1a7df" class="bulleted-list"><li style="list-style-type:disc">在 VSCode 中，用 <code>cmd+shift+p</code> 開啟設定，並 key 入 <code>Remote-SSH: Open SSH Configuration File</code> ，並打開我目前目錄下的 ssh config 檔案 ( <code>User/hanklee/.ssh/config</code> )。如果沒有這個檔案，就自己建一個。</li></ul><ul id="d49c4d64-0530-4b35-830e-5a3ed0569baa" class="bulleted-list"><li style="list-style-type:disc">在此文件中，做以下輸入：</li></ul><pre id="54bde637-c5d1-4294-8936-144249abef79" class="code"><code>Host hadoop-s1-testing
+  HostName 172.16.99.233
+  User hadoop
+  IdentityFile C:\Users\19002329\.ssh\id_rs</code></pre><ul id="68c9b903-fff6-46d3-8d78-6df9a85fc25d" class="bulleted-list"><li style="list-style-type:disc">說明一下：<ul id="1fcbe29c-6b96-49b3-a2bb-cbf89f77f2aa" class="bulleted-list"><li style="list-style-type:circle">Host: [必填] 這邊就是自己幫遠端 server 命名，我寫 hadoop-s1-testing 的意思是，帳號用 hadoop，ip是 s1測試區 的意思</li></ul><ul id="bd98dcc4-b439-4fd8-90cd-cc6b2ca9a9a7" class="bulleted-list"><li style="list-style-type:circle">HostName: [必填] 就是 ip</li></ul><ul id="ab4e0db6-0457-4ec1-99d1-17f6f35093dd" class="bulleted-list"><li style="list-style-type:circle">User: [必填] 也是剛剛連線資訊中有提到的登入 user ，目前是 ubuntu</li></ul><ul id="3fc4b87b-00d3-43ac-a978-a3799b311217" class="bulleted-list"><li style="list-style-type:circle">IdentityFile: [選填] 填入這台電腦 private key 擺放的位子</li></ul></li></ul><ul id="f3cf21ef-6487-41f4-9926-bf32c6b7fe1b" class="bulleted-list"><li style="list-style-type:disc">如果最後一行的 identityFile 不寫的話，那也是可以連線，只是他會要你輸入密碼。而且是，你每瀏覽一個資料夾，他都要你輸入一次，非常麻煩</li></ul><ul id="80304c32-1258-452d-a8db-cff2dd7be092" class="bulleted-list"><li style="list-style-type:disc">那如果有設定 IdentityFile，那他會用 ssh 認證，就是去比對 遠端 server 的 .ssh 資料夾中 的 authorized_keys 這個檔案下，有沒有 public key 的內容，能和你這邊寫的筆電(local端) 的 private key 的內容對起來。如果對得上，就連線成功</li></ul><h1 id="78a6de98-467c-4384-8f74-733a9978063e" class="">5. 選定 git for windows 來幫忙做 ssh</h1><ul id="c9aed084-4641-47dd-aa68-d22703bcddaa" class="bulleted-list"><li style="list-style-type:disc">要做到 SSH 連線，需要有個 client 端。雖然 windows 有出  <code>Windows OpenSSH client</code> ，但還要跟 mis 申請，很麻煩。所以，我們直接指定用已經安裝過的 git for windows 來處理就好</li></ul><ul id="341f5420-5399-4fba-ab0f-3f1d0463bd9f" class="bulleted-list"><li style="list-style-type:disc">打 <code>ctrl + shift + p</code> 進入設定，打 <code>Open settings (JSON)</code> 進入 json 的設定檔，並把以下內容加入即可：<pre id="ca5fc958-0e67-4620-bd8c-1bf9978160ec" class="code"><code>&quot;remote.SSH.path&quot;: &quot;D:\\Programs\\Git\\usr\\bin\\ssh.exe&quot;</code></pre></li></ul><ul id="0710380a-320f-43ca-93dc-717a7ccf8e66" class="bulleted-list"><li style="list-style-type:disc">那個路徑，前面是你安裝 git for windows 時的路徑，我是裝在 <code>D:\\Programs\\Git</code> ，所以這樣寫。那如果是預設的話，應該會裝在 <code>C:\Program Files\Git</code> 這個下面，那路徑再改一下就好。</li></ul><ul id="11ecf1d7-7936-4128-af78-15e77df84d22" class="bulleted-list"><li style="list-style-type:disc">設定完後，VSCode 就知道要用哪個 ssh client 去執行認證了。</li></ul><h1 id="2a07e27e-5d11-4b8b-bdf8-6b884438c71d" class="">5. 連線吧！！</h1><ul id="283f8e19-51dd-40cb-9d8c-2739ca67c919" class="bulleted-list"><li style="list-style-type:disc">點 VSCode 左下角的綠色連線 ICON → 選 Connect to Host → 選你剛剛定義好的 Host (e.g. hadoop-s1-testing) → 連線成功！！</li></ul><ul id="19f78946-6de0-42ee-beaf-ef59d9d6f574" class="bulleted-list"><li style="list-style-type:disc">現在只要 open file 或 open folder，都可以取得這個遠端的資料了。</li></ul></div></article></body></html>

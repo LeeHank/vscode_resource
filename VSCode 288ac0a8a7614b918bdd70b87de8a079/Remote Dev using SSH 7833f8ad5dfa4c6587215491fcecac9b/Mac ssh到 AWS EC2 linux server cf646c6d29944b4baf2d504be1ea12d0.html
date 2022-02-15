@@ -1,0 +1,669 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Mac ssh到 AWS EC2 linux server</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+}
+
+.simple-table-header {
+	background: rgb(247, 246, 243);
+	color: black;
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="cf646c6d-2994-4b4b-af2d-504be1ea12d0" class="page sans"><header><h1 class="page-title">Mac ssh到 AWS EC2 linux server</h1></header><div class="page-body"><ul id="847f2cef-deb4-4e35-b41b-2499bcedd5ce" class="bulleted-list"><li style="list-style-type:disc">這邊先整理怎麼連到 AWS EC2 linux server，之後在整理比較 general 的做法 (連到任何 linux server)</li></ul><h1 id="d726b52b-8262-4570-a47b-4d2058ee20fc" class="">1. System requirements</h1><ul id="a05fbfe3-6e59-4e72-a5f2-f89eafc2473b" class="bulleted-list"><li style="list-style-type:disc">需要確認已安裝以下三個東西：<ul id="1455415e-021d-4561-bcfa-dadda78c9a89" class="bulleted-list"><li style="list-style-type:circle">VSCode</li></ul><ul id="570a1793-143b-4f58-81e6-c400034719af" class="bulleted-list"><li style="list-style-type:circle"><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack">Remote Development extension pack</a></li></ul><ul id="1a09a151-257f-48ec-9031-76bd572e99c8" class="bulleted-list"><li style="list-style-type:circle"><a href="https://code.visualstudio.com/docs/remote/troubleshooting#_installing-a-supported-ssh-client">OpenSSH compatible SSH client</a></li></ul></li></ul><h2 id="50ef2289-cc13-4f58-a41b-00f8964a3898" class="">1.1 VSCode</h2><ul id="ca03eb7b-ec9e-4f7c-96c9-b0c170004182" class="bulleted-list"><li style="list-style-type:disc">這個早就裝好了，也不用截圖了</li></ul><h2 id="461e92dc-5889-4efe-a545-be40352ea9c4" class="">1.2 Remote Development extension pack</h2><ul id="a20dfad9-0f53-4d5a-a286-68d720feb0e0" class="bulleted-list"><li style="list-style-type:disc">就是 VSCode 上的 extension<figure id="cc2d00e2-d41c-4009-afbc-a5e2a36e4c7a" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled.png"><img style="width:1568px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled.png"/></a></figure></li></ul><p id="76705c05-23de-48ee-bd88-76370dd22b3f" class="">
+</p><h2 id="60873e33-458e-4fb1-bef3-bfe27cfcdcf4" class="">1.3 OpenSSH compatible SSH client</h2><ul id="188ab78e-0a43-413e-877f-58fd75c31dc9" class="bulleted-list"><li style="list-style-type:disc">在 local 端，需要安裝 <a href="https://code.visualstudio.com/docs/remote/troubleshooting#_installing-a-supported-ssh-client"><code>OpenSSH compatible SSH client</code></a> <figure id="360faca9-4914-4f6e-a349-a771996d9bd0" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%201.png"><img style="width:528px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%201.png"/></a></figure></li></ul><ul id="8a11bb75-1d7e-4199-9d21-338d216e090e" class="bulleted-list"><li style="list-style-type:disc">可以看到，對 <code>macOS</code> 來說，已經預先安裝好了，所以在這一步不用做任何事。</li></ul><p id="b428da41-8a63-4117-9529-c8c1e13bc000" class="">
+</p><h1 id="ac0b59c0-768f-4872-84c7-51d5ba9eb02e" class="">2. 取得 AWS EC2 連線資訊</h1><ul id="2ab31a65-1d8a-4b95-85ec-b8b1f3be5288" class="bulleted-list"><li style="list-style-type:disc">從 AWS EC2 網頁中，獲取目前 instance 的連線資訊<figure id="670ef862-2220-4d21-9841-4277f2460dca" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%202.png"><img style="width:2546px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%202.png"/></a></figure><figure id="2c258de2-8309-4837-a7a4-6b482dd6aec6" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%203.png"><img style="width:1930px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%203.png"/></a></figure></li></ul><ul id="cfe3319b-85b7-491c-a75b-1f8b369707ec" class="bulleted-list"><li style="list-style-type:disc">所以，我在 mac 的 terminal，可直接用第六點的指令登入了：<pre id="b5207db2-564e-4f75-9c2b-5d4b47c26ebb" class="code"><code>ssh -i &quot;./desktop/aws_pair_key/shiny_deploy.cer&quot; ubuntu@ec2-3-15-41-154.us-east-2.compute.amazonaws.com</code></pre></li></ul><ul id="cf5af5de-1740-4d1f-a93f-d4a6ad47d75d" class="bulleted-list"><li style="list-style-type:disc">但我現在是要用 VSCode 登入，所以繼續往下看。</li></ul><h1 id="03d7e5a4-3e69-47a8-9899-13f74f8ed8b7" class="">3. VSCode 設定</h1><h2 id="c6e33f8e-1f8c-4d74-8fd1-d20c7abdbf0b" class="">3.1 Open SSH configuration</h2><ul id="88fc7fc0-4d76-4796-9767-23a580b43e02" class="bulleted-list"><li style="list-style-type:disc">在 VSCode 中，用 <code>cmd+shift+p</code> 開啟設定，並 key 入 <code>Remote-SSH: Open SSH Configuration File</code> ，並打開我目前目錄下的 ssh config 檔案 ( <code>User/hanklee/.ssh/config</code> )。如果沒有這個檔案，就自己建一個</li></ul><ul id="5ae41c7b-b541-4789-b0e6-78d8745d9a47" class="bulleted-list"><li style="list-style-type:disc">在此文件中，做以下輸入：</li></ul><pre id="443fb34a-07e4-4653-aff0-aa449a2405bf" class="code"><code>ServerAliveInterval 60
+
+Host aws-ec2
+  HostName ec2-3-15-41-154.us-east-2.compute.amazonaws.com
+  User ubuntu
+  IdentityFile ~/desktop/aws_pair_key/shiny_deploy.cer</code></pre><ul id="41136042-7ac9-44f8-a7f9-ebbf28b396cf" class="bulleted-list"><li style="list-style-type:disc">第一行的指令比較無關，這是我之前不想讓與遠端 server 的連結，動不動就斷線，所以做這個設定，確保當我沒做事時，要 60 分鐘後，遠端 server 才會斷掉我的連線</li></ul><ul id="9af40ddb-df95-40ed-93b5-64993f5d6447" class="bulleted-list"><li style="list-style-type:disc">第二行開始就重要了：<ul id="1345f8b6-e5fd-4759-8fa3-99e0036d8cde" class="bulleted-list"><li style="list-style-type:circle">Host: 這邊就是自己幫遠端 server 命名，我這邊寫 aws-ec2 ，其實寫啥都可以</li></ul><ul id="6fda3e5c-c13a-4c55-8824-2d5f3e607dfb" class="bulleted-list"><li style="list-style-type:circle">HostName: 就是剛剛連線資訊中的 Host name </li></ul><ul id="a0f7f09c-ffa5-41c5-8551-90a7dfb74a35" class="bulleted-list"><li style="list-style-type:circle">User: 也是剛剛連線資訊中有提到的登入 user ，目前是 ubuntu</li></ul><ul id="e07cf3db-68e7-489c-ab50-ab81d1f24360" class="bulleted-list"><li style="list-style-type:circle">IdentityFile: 也是剛剛連線資訊中有填到的 identity file位置</li></ul></li></ul><ul id="7afd4096-4fcf-47db-82da-f19c473acb5f" class="bulleted-list"><li style="list-style-type:disc">過程截圖：<figure id="12fb3b1f-00cd-410b-89fe-371a0646a6d6" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%204.png"><img style="width:649px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%204.png"/></a></figure><figure id="ea6b4ea1-a643-4174-80f7-9fe0ca60cbe1" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%205.png"><img style="width:650px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%205.png"/></a></figure><figure id="d858f728-50d2-467a-b452-fb2c30fa661e" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%206.png"><img style="width:526px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%206.png"/></a></figure></li></ul><h2 id="f42b0e97-26f9-4aa4-872f-5591601f4e12" class="">3.2 建立連線</h2><ul id="dd94dfdd-f963-4dd5-9da2-fff9cd71ecd8" class="bulleted-list"><li style="list-style-type:disc">依照以下步驟連線<figure id="30fe45b8-5e2e-48b4-a1a1-529f7f184d6e" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%207.png"><img style="width:2200px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%207.png"/></a></figure><figure id="36c2b76a-0a34-48de-a639-f28b9d33d6c0" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%208.png"><img style="width:576px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%208.png"/></a></figure><figure id="be110f64-05ca-47ee-b5b8-8a7e1274a635" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%209.png"><img style="width:480px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%209.png"/></a></figure><figure id="2252b981-8b4b-4ca5-93b3-265696889a56" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%2010.png"><img style="width:1408px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%2010.png"/></a></figure><figure id="fba25c4b-1746-4bf5-8d37-1ce49101f2e8" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%2011.png"><img style="width:576px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%2011.png"/></a></figure></li></ul><h1 id="39b44288-6690-4a83-9f38-cb2cee560ef8" class="">4. 關閉連線</h1><ul id="a6f58233-1b69-41ea-9e06-f586b1740e8c" class="bulleted-list"><li style="list-style-type:disc">如以下截圖：<figure id="cc0fd142-793e-4d4b-9d7b-9c7016f9717d" class="image"><a href="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%2012.png"><img style="width:1874px" src="Mac%20ssh%E5%88%B0%20AWS%20EC2%20linux%20server%20cf646c6d29944b4baf2d504be1ea12d0/Untitled%2012.png"/></a></figure></li></ul><h1 id="c263fdf3-4506-49a3-b429-867e53b9ef2c" class="">2. 設定本地的 public key</h1><h2 id="d6aae337-c82e-43f0-8aec-9abec937cc85" class="">2.1 確認一下有沒有生成過 <code>id_rsa.pub</code>  </h2><ul id="89122d10-8c1a-4b0b-8c56-0d8ae789374b" class="bulleted-list"><li style="list-style-type:disc"><code>id_rsa.pub</code> 預設會放在 <code>home/username/.ssh</code> 這個資料夾下，所以我們可以這樣檢查：</li></ul><pre id="ddd26c39-ece4-4461-9335-0d224a673b18" class="code"><code>cd ~ # 切到使用者的目錄，對我來說，就是 home/hanklee
+cd .ssh # 切到此資料夾中
+ls # 看一下裡面有沒有 id_rsa.pub</code></pre><p id="39e20119-6361-46f8-927d-251f7e7bdc97" class="">
+</p><h2 id="9a627007-9424-4adc-9c72-f34926909791" class="">2.2 如果沒有，自己生成一個</h2><pre id="4b5b3312-a486-4aad-94db-1d95f878ebf6" class="code"><code>cd .ssh # 如果連 .ssh 資料夾都沒有，就自己建立一個： mkdir .ssh
+ssh-keygen -t rsa -b 4096</code></pre><p id="0c67e82c-029d-49d2-ac40-7ab9eecb44d2" class="">
+</p><h1 id="9c1354ac-41e7-4092-aca6-d4ecaeab1077" class="">3. 把 public key 傳到遠端 linux server 上</h1><ul id="b8b95360-81f9-4687-8e54-f1f07d2ef9fa" class="bulleted-list"><li style="list-style-type:disc">若用指令上傳，可以這樣寫：</li></ul><pre id="1d0e6f37-f179-421f-8426-33e8a7d114b6" class="code"><code>ssh-copy-id -i ~/.ssh/id_rsa.pub Obama@172.71.86.12</code></pre><ul id="d6892f39-8ed5-4e28-925f-f30f25724f5e" class="bulleted-list"><li style="list-style-type:disc">或是用 filezilla ，就直接把 <code>id_rsa.pub</code> 這個檔案，複製貼上到 linux server 上</li></ul></div></article></body></html>
